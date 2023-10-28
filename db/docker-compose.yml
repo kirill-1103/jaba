@@ -1,0 +1,100 @@
+version: '3'
+
+services: 
+  
+  db-news:
+    image: postgres
+    environment: 
+      - POSTGRES_DB=jabka_news
+      - POSTGRES_USER=jabka
+      - POSTGRES_PASSWORD=123
+    ports:
+      - 5434:5432
+#    volumes:
+#      - db_data_news:/var/lib/postgresql/data
+
+  db-user:
+    image: postgres
+    environment: 
+      - POSTGRES_DB=jabka_user
+      - POSTGRES_USER=jabka
+      - POSTGRES_PASSWORD=123
+    ports:
+      - 5435:5432
+#    volumes:
+#      - db_data_user:/var/lib/postgresql/data
+
+  db-study:
+    image: postgres
+    environment:
+      - POSTGRES_DB=jabka_study
+      - POSTGRES_USER=jabka
+      - POSTGRES_PASSWORD=123
+    ports:
+      - 5436:5432
+#
+##
+#  user-service:
+#    depends_on:
+#      - db-user
+#    container_name: user-service
+#    build:
+#      context: .
+#      dockerfile: dockerfile-user
+#    network_mode: host
+
+# study-service:
+#    depends_on:
+#      - db-study
+#    container_name: study-service
+#    build:
+ #     context: .
+#      dockerfile: dockerfile-study
+#    network_mode: host
+##
+#  gateway-service:
+#    container_name: gateway-service
+#    build:
+#      context: .
+#      dockerfile: dockerfile-gateway
+#    network_mode: host
+##
+#  news-service:
+#    depends_on:
+#      - db-news
+#    container_name: news-service
+#    build:
+#      context: .
+#      dockerfile: dockerfile-news
+#    network_mode: host
+#    restart: on-failure
+#    
+#  front: 
+#    container_name: front
+#    build:
+#      context: .
+#     dockerfile: dockerfile-front
+#   network_mode: host
+#    restart: on-failure
+
+
+#    volumes:
+#      - db_data_study:/var/lib/postgresql/data
+#volumes:
+#  db_data_user:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      device: ${PWD}/../db_data/user
+#      o: bind 
+#  db_data_news:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      device: ${PWD}/../db_data/news
+#      o: bind
+#  db_data_study:
+#    driver_opts:
+#      type: none
+#      device: ${PWD}/../db_data/study
+#      o: bind

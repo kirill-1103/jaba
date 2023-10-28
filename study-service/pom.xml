@@ -10,7 +10,7 @@
     </parent>
     <groupId>sovcombank.jabka</groupId>
     <artifactId>study-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>study-service</name>
     <description>study-service</description>
     <properties>
@@ -150,6 +150,8 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <includeSystemScope>true</includeSystemScope>
+                    <outputDirectory>./jar</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

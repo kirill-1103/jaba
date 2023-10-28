@@ -69,13 +69,13 @@ services:
     network_mode: host
     restart: on-failure
     
-  front: 
-    container_name: front
-    build:
-      context: .
-      dockerfile: dockerfile-front
-    network_mode: host
-    restart: on-failure
+#  front:
+#    container_name: front
+#    build:
+#      context: .
+#      dockerfile: dockerfile-front
+#    network_mode: host
+#    restart: on-failure
 
 
 #    volumes:
