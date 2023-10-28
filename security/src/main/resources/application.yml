@@ -1,0 +1,17 @@
+jwt:
+  secret : 984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf
+  ifetime : 2h
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+  ssl:
+    enabled: true
+    key-store: classpath:springboot.p12
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: springboot
+    key-password: password
+    client-auth: NEED

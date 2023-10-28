@@ -1,0 +1,40 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: study-service
+    api-name: API_ADMIN
+
+  sql:
+    init:
+      mode: always
+  datasource:
+    username: jabka
+    password: 123
+    url: jdbc:postgresql://localhost:5436/jabka_study
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    show_sql: true
+    properties:
+      hibernate:
+      format_sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+aws:
+  accessKeyId: YCAJE7I2o8E0LXtPZM7wL8QKu
+  secretKey: YCPos-12DCtvxsSMbGoWzpDICO2oyjX8cqDvrr9R
+  region: ru-central1
+  bucketName: jabka
+  baseUri: https://storage.yandexcloud.net
+
+user-service:
+  base-url: http://localhost:8082/api/user
+
+jwt:
+  secret: 984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf
+  lifetime: 72h

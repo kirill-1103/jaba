@@ -1,0 +1,2 @@
+psql -f news.sql -h 127.0.0.1 -p 5434 -d jabka_news
+

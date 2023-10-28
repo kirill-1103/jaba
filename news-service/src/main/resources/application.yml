@@ -1,0 +1,24 @@
+server:
+  port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    username: jabka
+    password: 123
+    url: jdbc:postgresql://localhost:5434/jabka_news
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    show_sql: true
+    properties:
+      hibernate:
+      format_sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQL95Dialect

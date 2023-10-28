@@ -1,0 +1,57 @@
+server:
+  port:
+    8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5435/jabka_user
+    username: jabka
+    password: 123
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: always
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    show_sql: true
+    properties:
+      format_sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    protocol: smtps
+    username: jabka.edu@yandex.ru
+    password: casexejycawpefvp
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+        ssl:
+          enable: true
+        sender:
+          email: jabka.edu@yandex.ru
+
+mail-service:
+  activation:
+    uri: http://localhost:8082/api/user/auth/activation?token={token}
+  recovery:
+    uri: http://localhost:8082/api/user/auth/recovery?token={token}
+
+
+jwt:
+  secret: 984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf
+  lifetime: 2h
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+

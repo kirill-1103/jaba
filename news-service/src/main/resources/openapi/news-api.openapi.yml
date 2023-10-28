@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: News API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8081/api
+paths:
+
+  /news:
+    get:
+      summary: All News Info
+      tags:
+        - News
+      operationId: showAllNewsInfo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsOpenAPI"
+        '404':
+          description: Not Found
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Create News Post
+      tags:
+        - News
+      operationId: createNewsPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsOpenAPI"
+      responses:
+        '201':
+          description: Created News Post
+        '400':
+          description: Bad Request
+        '401':
+          description: Access Token Isn't Valid
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Don't Have Necessary Rights
+
+  /news/{id}:
+    get:
+      summary: News Info by Id
+      tags:
+        - News
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      operationId: showNewsIdInfo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/NewsOpenAPI"
+        '400':
+          description: Bad Request
+        '404':
+          description: News Post with this ID Was Not Found
+    put:
+      summary: Edit News by ID
+      tags:
+        - News
+      operationId: editNewsById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: News Id
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsOpenAPI"
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Access Token Isn't Valid
+          $ref: "#/components/responses/UnauthorizedError"
+        '404':
+          description: News Post with this ID Was Not Found
+    delete:
+      summary: Delete News by ID
+      tags:
+        - News
+      operationId: deleteNewsById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: News Id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: News Successfully Deleted
+        '400':
+          description: Error Occurred while Removing
+        '401':
+          description: Access Token Isn't Valid
+          $ref: "#/components/responses/UnauthorizedError"
+        '404':
+          description: News With This ID Was Not Found
+
+components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    NewsOpenAPI:
+      type: object
+      required:
+        - header
+        - date
+        - text
+        - hashtags
+      properties:
+        id:
+          type: integer
+          format: int64
+        header:
+          type: string
+        date:
+          type: string
+          format: date-time
+        text:
+          type: string
+        imgs:
+          type: array
+          items:
+            type: string
+        hashtags:
+          type: array
+          items:
+            type: string
+

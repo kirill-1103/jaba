@@ -1,0 +1,1505 @@
+openapi: 3.0.0
+info:
+  title: Study API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8083/api/study
+paths:
+  /schedule:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Get All Schedule
+      tags:
+        - Schedule
+      operationId: getAllSchedule
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScheduleOpenAPI"
+        '400':
+          description: Bad Request
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Create a Schedule
+      tags:
+        - Schedule
+      operationId: createSchedule
+      requestBody:
+        description: Schedule Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleOpenAPI'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: Update a Schedule by Id
+      tags:
+        - Schedule
+      operationId: updateSchedule
+      requestBody:
+        description: Schedule Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleOpenAPI'
+      responses:
+        '200':
+          description: Updated
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /schedule/{id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Schedule Information by Id
+      tags:
+        - Schedule
+      operationId: getScheduleByGroupId
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScheduleOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a Schedule by Id
+      tags:
+        - Schedule
+      operationId: deleteSchedule
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /schedule/professor/{professorId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Get Schedule By Professor Id
+      tags:
+        - Schedule
+      operationId: getScheduleByProfessorId
+      parameters:
+        - in: path
+          name: professorId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScheduleOpenAPI"
+        '400':
+          description: Bad Request
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /group/{id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Group Information
+      tags:
+        - Group
+      operationId: getGroupById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyGroupOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a Group By Id
+      tags:
+        - Group
+      operationId: deleteGroupById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /group:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: All Groups Information
+      tags:
+        - Group
+      operationId: getAllGroups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyGroupOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Create a Group
+      tags:
+        - Group
+      operationId: createGroup
+      requestBody:
+        description: Group Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudyGroupOpenAPI'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /group/user:
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Add user in group
+      tags:
+        - Group
+      operationId: addUserInGroup
+      requestBody:
+        description: User id, group id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInGroupRequestOpenApi'
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete user from group
+      tags:
+        - Group
+      operationId: deleteUserFromGroup
+      requestBody:
+        description: User id, group id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInGroupRequestOpenApi'
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /group/users:
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Add users in group
+      tags:
+        - Group
+      operationId: addUsersInGroup
+      requestBody:
+        description: User's ids, group's ids
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserInGroupRequestOpenApi'
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete users in group
+      tags:
+        - Group
+      operationId: deleteUsersFromGroup
+      requestBody:
+        description: User's ids, group's ids
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserInGroupRequestOpenApi'
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /attendance-statistics:
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Add/Update Statistics
+      tags:
+        - AttendanceStatistics
+      operationId: addStatistics
+      requestBody:
+        description: Attendance Statistics Entity
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttendanceStatisticsOpenApi'
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+
+  /attendance-statistics/{id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Attendance statistics Information
+      tags:
+        - AttendanceStatistics
+      operationId: getStatisticsById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttendanceStatisticsOpenApi"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /attendance-statistics/group/{group_id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Group's Attendance Statistics Information
+      tags:
+        - AttendanceStatistics
+      operationId: getStatisticsByGroupId
+      parameters:
+        - in: path
+          name: group_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttendanceStatisticsOpenApi"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /attendance-statistics/schedule/{scheduleId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Get Attendance Statistics by Schedule Id
+      tags:
+        - AttendanceStatistics
+      operationId: getStatisticsBySchedule
+      parameters:
+        - in: path
+          name: scheduleId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttendanceStatisticsOpenApi"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /attendance-statistics/subject/{subject_id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Subject's Attendance Statistics Information
+      tags:
+        - AttendanceStatistics
+      operationId: getStatisticsBySubjectId
+      parameters:
+        - in: path
+          name: subject_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttendanceStatisticsOpenApi"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /materials:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: All Materials Information
+      tags:
+        - Materials
+      operationId: getAllMaterials
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyMaterialsOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Create a Material
+      tags:
+        - Materials
+      operationId: createMaterials
+      requestBody:
+        description: Materials Object
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudyMaterialsBody'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: Update a Materials
+      tags:
+        - Materials
+      operationId: updateMaterials
+      requestBody:
+        description: Materials Object
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudyMaterialsBody'
+      responses:
+        '200':
+          description: Updated
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /materials/{id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Materials Information
+      tags:
+        - Materials
+      operationId: getMaterialsById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyMaterialsOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a Material by Id
+      tags:
+        - Materials
+      operationId: deleteMaterials
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /homework/materials/{materialsId}/all:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: All Homeworks Information by Materials Id
+      tags:
+        - Homework
+      operationId: getAllHomeworksByMaterials
+      parameters:
+        - in: path
+          name: materialsId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomeworkOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /homework/materials/{materialsId}:
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Create a Homework
+      tags:
+        - Homework
+      operationId: createHomework
+      parameters:
+        - in:
+            path
+          name: materialsId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      requestBody:
+        description: Homework Object
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SaveHomeworkRequestOpenApi'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /homework/grade/{homeworkId}:
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: Grade a Homework
+      tags:
+        - Homework
+      operationId: gradeHomework
+      parameters:
+        - in: path
+          name: homeworkId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      requestBody:
+        description: Grade and comment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref:  '#/components/schemas/GradeHomeworkRequestOpenApi'
+      responses:
+        '200':
+          description: Updated
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /homework/{homeworkId}:
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: Update a Homework
+      tags:
+        - Homework
+      operationId: updateHomework
+      parameters:
+        - in: path
+          name: homeworkId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      requestBody:
+        description: Homework Object
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SaveHomeworkRequestOpenApi'
+      responses:
+        '200':
+          description: Updated
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Homework Information
+      tags:
+        - Homework
+      operationId: getHomeworkById
+      parameters:
+
+        - in: path
+          name: homeworkId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomeworkOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a Homework
+      tags:
+        - Homework
+      operationId: deleteHomework
+      parameters:
+        - in: path
+          name: homeworkId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /homework/student/{studentId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: All Homeworks Information By Student
+      tags:
+        - Homework
+      operationId: getHomeworkByStudentId
+      parameters:
+        - name: studentId
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomeworkOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Student Not Found
+
+  /homework/materials/{materialsId}/student/{studentId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Get Student's Homework by Material
+      tags:
+        - Homework
+      operationId: getHomeworkByStudentAndMaterials
+      parameters:
+          - name: materialsId
+            in: path
+            schema:
+              type: integer
+              format: int64
+            required: true
+          - name: studentId
+            in: path
+            schema:
+              type: integer
+              format: int64
+            required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomeworkOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Student Not Found
+
+  /subject:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: All Subjects Information
+      tags:
+        - Subject
+      operationId: getAllSubjects
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubjectOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: Create a Subject
+      tags:
+        - Subject
+      operationId: createSubject
+      requestBody:
+        description: Subject Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectOpenAPI'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: Update a Subject
+      tags:
+        - Subject
+      operationId: updateSubject
+      requestBody:
+        description: Subject Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectOpenAPI'
+      responses:
+        '200':
+          description: Updated
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+
+  /subject/{id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Subject Information
+      tags:
+        - Subject
+      operationId: getSubjectById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubjectOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a Subject by Id
+      tags:
+        - Subject
+      operationId: deleteSubject
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: Deleted
+        '400':
+          description: Bad Request
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /subject/group/{group_id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Subjects Information By Group Id
+      tags:
+        - Subject
+      operationId: getSubjectsByGroupId
+      parameters:
+        - in: path
+          name: group_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubjectOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /subject/creator/{creator_id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Subjects Information By Creator Id
+      tags:
+        - Subject
+      operationId: getSubjectsByCreatorId
+      parameters:
+        - in: path
+          name: creator_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubjectOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /subject/editor/{editor_id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Subjects Information By Editor Id
+      tags:
+        - Subject
+      operationId: getSubjectsByEditor
+      parameters:
+        - in: path
+          name: editor_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubjectOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /materials/subject/{subject_id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Get All Materials by Subject Id
+      tags:
+        - Materials
+      operationId: getMaterialsBySubjectId
+      parameters:
+        - in: path
+          name: subject_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyMaterialsOpenAPI"
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /download/homework/{fileId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Download File by It's Id
+      tags:
+        - File Download
+      operationId: downloadHomeworkFileById
+      parameters:
+        - in: path
+          name: fileId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+
+  /download/materials/{fileId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: Download File by It's Id
+      tags:
+        - File Download
+      operationId: downloadMaterialsFileById
+      parameters:
+        - in: path
+          name: fileId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
+        '403':
+          description: Do Not Have Necessary Rights to Execute This Operation
+        '404':
+          description: Not Found
+components:
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    StudyMaterialsBody:
+      type: object
+      required:
+        - studyMaterials
+      properties:
+        studyMaterials:
+          $ref: "#/components/schemas/StudyMaterialsOpenAPI"
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+            description: Files with Materials
+
+    ScheduleOpenAPI:
+      type: object
+      required:
+        - dateTime
+        - studyGroupId
+        - subjectId
+        - classFormat
+        - professorId
+      properties:
+        id:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+        studyGroupId:
+          type: integer
+          format: int64
+        subjectId:
+          type: integer
+          format: int64
+        classFormat:
+          $ref: "#/components/schemas/ClassFormat"
+        auditorium:
+          type: string
+        linkForTheClass:
+          type: string
+        professorId:
+          type: integer
+          format: int64
+
+    StudyGroupOpenAPI:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        studentsIds:
+          type: array
+          description: studentsIDs
+          items:
+            type: integer
+            format: int64
+
+    SubjectOpenAPI:
+      type: object
+      required:
+        - name
+        - studyGroupsIds
+        - creatorId
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        studyGroupsIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        studyMaterialsIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        scheduleIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        creatorId:
+          type: integer
+          format: int64
+        editorsIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    ClassFormat:
+      type: string
+      enum:
+        - IN_PERSON
+        - DISTANT
+
+    StudyMaterialsType:
+      type: string
+      enum:
+        - MATERIAL
+        - TASK
+
+    StudyMaterialsOpenAPI:
+      type: object
+      required:
+        - type
+        - subjectId
+        - materialsText
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          $ref: "#/components/schemas/StudyMaterialsType"
+        materialsText:
+          type: string
+        subjectId:
+          type: integer
+          format: int64
+        homeworkIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        filesId:
+          type: array
+          items:
+            type: integer
+            format: int64
+        filesNames:
+          type: array
+          items:
+            type: string
+
+    HomeworkOpenAPI:
+      type: object
+      required:
+        - taskId
+        - studentId
+        - date
+      properties:
+        id:
+          type: integer
+          format: int64
+        taskId:
+          type: integer
+          format: int64
+        studentId:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+        grade:
+          type: integer
+        comment:
+          type: string
+        filesNames:
+          type: array
+          items:
+            type: string
+        fileIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+
+    SaveHomeworkRequestOpenApi:
+      type: object
+      required:
+        - homework
+        - file
+      properties:
+        homework:
+          $ref: "#/components/schemas/HomeworkOpenAPI"
+        file:
+          type: array
+          items:
+            type: string
+            format: binary
+            description: File with homework
+
+    UserInGroupRequestOpenApi:
+      type: object
+      required:
+        - userId
+        - groupId
+      properties:
+        userId:
+          type: integer
+          format: int64
+        groupId:
+          type: integer
+          format: int64
+
+    UserOpenApi:
+      type: object
+      required:
+        - login
+        - name
+        - surname
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+        login:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        email:
+          type: string
+        group:
+          type: string
+        photo:
+          type: string
+          description: base64 string
+        password:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoleOpenApi"
+        activationStatus:
+          $ref: "#/components/schemas/ActivationStatusOpenAPI"
+
+    ActivationStatusOpenAPI:
+      type: string
+      enum:
+        - ACTIVATED
+        - WAIT_FOR_EMAIL_VERIFICATION
+
+    RoleOpenApi:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          $ref: "#/components/schemas/ERoleOpenApi"
+
+    ERoleOpenApi:
+      type: string
+      enum:
+        - ROLE_STUDENT
+        - ROLE_ADMIN
+        - ROLE_TEACHER
+        - ROLE_CURATOR
+        - ROLE_ENROLLEE
+        - ROLE_MODERATOR
+        - ROLE_COMMITTE
+
+    AttendanceStatisticsOpenApi:
+      type: object
+      required:
+        - scheduleId
+        - userId
+        - status
+      properties:
+        scheduleId:
+           type: integer
+           format: int64
+        status:
+          $ref: "#/components/schemas/AttendanceStatusOpenApi"
+        studentId:
+          type: integer
+          format: int64
+
+    AttendanceStatusOpenApi:
+      type: string
+      enum:
+        - ATTENDED
+        - MISSED
+
+    GradeHomeworkRequestOpenApi:
+      type: object
+      required:
+        - grade
+      properties:
+        grade:
+          type: integer
+        comment:
+          type: string
