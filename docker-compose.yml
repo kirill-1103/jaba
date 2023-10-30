@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER=jabka
       - POSTGRES_PASSWORD=123
     ports:
-      - 5434:5432
+      - 5435:5432
 #    volumes:
 #      - db_data_news:/var/lib/postgresql/data
 
@@ -20,7 +20,7 @@ services:
       - POSTGRES_USER=jabka
       - POSTGRES_PASSWORD=123
     ports:
-      - 5435:5432
+      - 5436:5432
 #    volumes:
 #      - db_data_user:/var/lib/postgresql/data
 
@@ -31,7 +31,7 @@ services:
       - POSTGRES_USER=jabka
       - POSTGRES_PASSWORD=123
     ports:
-      - 5436:5432
+      - 5437:5432
 #
 ##
   user-service:
