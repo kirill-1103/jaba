@@ -151,10 +151,10 @@
                         </exclude>
                     </excludes>
                     <includeSystemScope>true</includeSystemScope>
-                    <outputDirectory>./jar</outputDirectory>
+                    <outputDirectory>${project.basedir}/jar</outputDirectory>
                 </configuration>
-
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

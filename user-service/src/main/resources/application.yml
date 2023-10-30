@@ -3,8 +3,10 @@ server:
     8082
 
 spring:
+  application:
+    name: user-service
   datasource:
-    url: jdbc:postgresql://localhost:5435/jabka_user
+    url: jdbc:postgresql://localhost:5436/jabka_user
     username: jabka
     password: 123
     driver-class-name: org.postgresql.Driver
@@ -41,10 +43,21 @@ management:
   endpoints:
     web:
       exposure:
-        include: *
-  endpoint:
-    health:
-      show-details: always
+        include: health,info,prometheus,metrics
+  tracing:
+    sampling:
+      probability: 1
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+    zipkin:
+      tracing:
+        endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:9411}/api/v2/spans
 
 mail-service:
   activation:
@@ -55,9 +68,11 @@ mail-service:
 
 jwt:
   secret: 984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf
-  lifetime: 2h
+  lifetime: 72h
 
 logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     org:
       springframework:

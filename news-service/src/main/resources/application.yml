@@ -11,7 +11,7 @@ spring:
   datasource:
     username: jabka
     password: 123
-    url: jdbc:postgresql://localhost:5434/jabka_news
+    url: jdbc:postgresql://localhost:5435/jabka_news
   jpa:
     defer-datasource-initialization: true
     hibernate:
