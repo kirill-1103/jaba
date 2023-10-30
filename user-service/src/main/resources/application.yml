@@ -37,6 +37,15 @@ spring:
         sender:
           email: jabka.edu@yandex.ru
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+  endpoint:
+    health:
+      show-details: always
+
 mail-service:
   activation:
     uri: http://localhost:8082/api/user/auth/activation?token={token}

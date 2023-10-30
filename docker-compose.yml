@@ -1,28 +1,28 @@
 version: '3'
 
-services: 
+services:
   
   db-news:
     image: postgres
-    environment: 
+    environment:
       - POSTGRES_DB=jabka_news
       - POSTGRES_USER=jabka
       - POSTGRES_PASSWORD=123
     ports:
       - 5435:5432
-#    volumes:
-#      - db_data_news:/var/lib/postgresql/data
+  #    volumes:
+  #      - db_data_news:/var/lib/postgresql/data
 
   db-user:
     image: postgres
-    environment: 
+    environment:
       - POSTGRES_DB=jabka_user
       - POSTGRES_USER=jabka
       - POSTGRES_PASSWORD=123
     ports:
       - 5436:5432
-#    volumes:
-#      - db_data_user:/var/lib/postgresql/data
+  #    volumes:
+  #      - db_data_user:/var/lib/postgresql/data
 
   db-study:
     image: postgres
@@ -32,8 +32,8 @@ services:
       - POSTGRES_PASSWORD=123
     ports:
       - 5437:5432
-#
-##
+  #
+  ##
   user-service:
     depends_on:
       - db-user
@@ -51,14 +51,14 @@ services:
       context: .
       dockerfile: dockerfile-study
     network_mode: host
-##
+  ##
   gateway-service:
     container_name: gateway-service
     build:
       context: .
       dockerfile: dockerfile-gateway
     network_mode: host
-#
+  #
   news-service:
     depends_on:
       - db-news
@@ -68,7 +68,62 @@ services:
       dockerfile: dockerfile-news
     network_mode: host
     restart: on-failure
-    
+
+  tempo:
+    image: grafana/tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./docker/tempo/tempo-local.yml:/etc/tempo.yaml
+      - ./docker/tempo/tempo-data:/tmp/tempo
+    ports:
+      - "14268"  # jaeger ingest
+      - "9411:9411" # zipkin
+
+  loki:
+    image: grafana/loki
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100"
+    environment:
+      - JAEGER_AGENT_HOST=tempo
+      - JAEGER_ENDPOINT=http://tempo:14268/api/traces
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1
+
+  prometheus:
+    image: prom/prometheus
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
+    depends_on:
+      - loki
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./docker/grafana/dashboards:/etc/grafana/dashboards
+      - ./docker/grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_BASIC_ENABLED="false"
+      - GF_AUTH_DISABLE_LOGIN_FORM="true"
+      - GF_AUTH_DISABLE_SIGNOUT_MENU="true"
+      - GF_AUTH_PROXY_ENABLED="true"
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - loki
+      - prometheus
+    ports:
+      - "3000:3000"
+
 #  front:
 #    container_name: front
 #    build:
