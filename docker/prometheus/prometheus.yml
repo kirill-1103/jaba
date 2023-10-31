@@ -9,16 +9,20 @@ scrape_configs:
   - job_name: 'gateway-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'gateway-service:8080' ]
+      - targets:
+          - host.docker.internal:8080
   - job_name: 'news-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'news-service:8081' ]
+      - targets:
+          - host.docker.internal:8081
   - job_name: 'user-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'user-service:8082' ]
+      - targets:
+          - host.docker.internal:8082
   - job_name: 'study-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'study-service:8083' ]
+      - targets:
+          - host.docker.internal:8083

@@ -42,6 +42,9 @@ services:
       context: .
       dockerfile: dockerfile-user
     network_mode: host
+    environment:
+      - LOKI_HOST=loki
+      - TEMPO_HOST=tempo
 
   study-service:
     depends_on:
@@ -51,6 +54,9 @@ services:
       context: .
       dockerfile: dockerfile-study
     network_mode: host
+    environment:
+      - LOKI_HOST=loki
+      - TEMPO_HOST=tempo
   ##
   gateway-service:
     container_name: gateway-service
@@ -58,6 +64,9 @@ services:
       context: .
       dockerfile: dockerfile-gateway
     network_mode: host
+    environment:
+      - LOKI_HOST=loki
+      - TEMPO_HOST=tempo
   #
   news-service:
     depends_on:
@@ -68,6 +77,9 @@ services:
       dockerfile: dockerfile-news
     network_mode: host
     restart: on-failure
+    environment:
+      - LOKI_HOST=loki
+      - TEMPO_HOST=tempo
 
   tempo:
     image: grafana/tempo
@@ -102,13 +114,17 @@ services:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+#    networks:
+#      monitoring:
+#        aliases:
+#          - prometheus
 
   grafana:
     image: grafana/grafana
     volumes:
       - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
       - ./docker/grafana/dashboards:/etc/grafana/dashboards
-      - ./docker/grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./docker/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
@@ -123,6 +139,14 @@ services:
       - prometheus
     ports:
       - "3000:3000"
+#    networks:
+#      monitoring:
+#        aliases:
+#          - grafana
+#
+#networks:
+#  monitoring:
+
 
 #  front:
 #    container_name: front

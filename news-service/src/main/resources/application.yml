@@ -5,13 +5,15 @@ server:
     include-binding-errors: always
 
 spring:
+  application:
+    name: news-service
   sql:
     init:
       mode: always
   datasource:
     username: jabka
     password: 123
-    url: jdbc:postgresql://localhost:5434/jabka_news
+    url: jdbc:postgresql://localhost:5435/jabka_news
   jpa:
     defer-datasource-initialization: true
     hibernate:
@@ -22,3 +24,20 @@ spring:
       format_sql: true
       database: postgresql
       database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    prometheus:
+      enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true

@@ -8,7 +8,7 @@ import sovcombank.jabka.libs.security.interfaces.PathUtils;
 public class PathUtilsImpl implements PathUtils {
 
     private final static String[] PUBLIC_PATHS = new String[]{
-
+        "/actuator/prometheus"
     };
 
     private final static String[] AUTHORIZED_PATHS = new String[]{

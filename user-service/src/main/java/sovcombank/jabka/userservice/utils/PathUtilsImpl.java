@@ -12,7 +12,8 @@ public class PathUtilsImpl implements PathUtils {
             "/api/user/auth/signup",
             "/api/user/auth/activation",
             "/api/user/auth/forget",
-            "/api/user/auth/recovery"
+            "/api/user/auth/recovery",
+            "/actuator/**"
     };
 
     private final static String[] AUTHORIZED_PATHS = new String[]{
