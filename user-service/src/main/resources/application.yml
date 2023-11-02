@@ -3,8 +3,10 @@ server:
     8082
 
 spring:
+  application:
+    name: user-service
   datasource:
-    url: jdbc:postgresql://localhost:5435/jabka_user
+    url: jdbc:postgresql://localhost:5436/jabka_user
     username: jabka
     password: 123
     driver-class-name: org.postgresql.Driver
@@ -37,6 +39,29 @@ spring:
         sender:
           email: jabka.edu@yandex.ru
 
+management:
+  tracing:
+    sampling:
+      probability: 1
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    prometheus:
+      enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411
+
 mail-service:
   activation:
     uri: http://localhost:8082/api/user/auth/activation?token={token}
@@ -49,6 +74,8 @@ jwt:
   lifetime: 2h
 
 logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     org:
       springframework:
